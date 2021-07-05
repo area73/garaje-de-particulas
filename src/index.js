@@ -1,27 +1,19 @@
-function start(canvas,context, idx,particleList) {
+const cleanup = (canvas) => {
+  canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
+};
 
-  // para mantener siempre el canvas al tamaño del documento
-  canvas.width = document.body.clientWidth;
-  canvas.height = document.body.clientHeight;
-
-  requestAnimationFrame(function () {
-    // console.log(canvas.width , canvas.height);
-    // cleanup(canvas);
-
-    context.fillStyle = '#f3e51f';
-    context.beginPath();
-    context.arc(200+idx, 200+idx, 20, 0, 2 * Math.PI, false);
-    context.fill();
-
-    // circleShape(canvas,particleList[0]).run();
-    // circleShape(canvas,particleList[1]).run();
-    // circleShape(canvas,particleList[2]);
-    idx++;
-    // console.log(idx);
-    start(canvas, context, idx, particleList);
-  })
-}
-
+const circleShape = (canvas, particle) => {
+  //console.log(Math.random());
+  const context = canvas.getContext("2d");
+  return {
+    run: () => {
+      context.fillStyle = particle.color;
+      context.beginPath();
+      context.arc(particle.position.x, particle.position.y, particle.size, 0, 2 * Math.PI, false);
+      context.fill();
+    }
+  };
+};
 /// ---------------
 
 const ParticleA = {
@@ -55,25 +47,71 @@ const particles = [
 ]
 
 
-const circleShape = (canvas, particle) => {
-  //console.log(Math.random());
-  const context = canvas.getContext("2d");
-  return {
-    run: () => {
-      context.fillStyle = particle.color;
-      context.beginPath();
-      context.arc(particle.position.x, particle.position.y, particle.size, 0, 2 * Math.PI, false);
-      context.fill();
-    }
-  };
-};
+const randomNum = (num) => Math.round(Math.random() * num);
 
-const cleanup = (canvas) => {
-  canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
+const randomParticle = () => {
+  return {
+    position: { x: randomNum(500) , y: randomNum(500) },
+    velocity: { x: randomNum(10) - 5, y: randomNum(10) - 5 },
+    acceleration: { x: randomNum(2) - 1, y: randomNum(2) - 1 },
+    color: `rgba(${randomNum(255)},${randomNum(255)},${randomNum(255)})`,
+    size: randomNum(10),
+  }
+}
+
+const vectorAdd = (p1, p2) => ({x : p1.x + p2.x ,y : p1.y+ p2.y});
+
+// moveParticle :: particle -> particle
+const moveParticle = (particle) => {
+  particle.position = vectorAdd(particle.position, particle.velocity )
+  return particle
+}
+
+const add = (n,inc) => n + inc;
+const changeParticleSize = (particle) => {
+  const inc = particle.size === 50 ? 0 : 1;
+  particle.size = add(particle.size,inc);
+  return particle;
+}
+
+const compose = (...functions) => arg =>
+  functions.reduceRight((result, fn) => fn(result), arg);
+
+
+function start(canvas,idx,particleList) {
+  // OJO::: NO METER ESTo AQUI !!!!
+  // canvas.width = document.body.clientWidth;
+  // canvas.height = document.body.clientHeight;
+
+  requestAnimationFrame(function draw() {
+    // console.log(canvas.width , canvas.height);
+    // para mantener siempre el canvas al tamaño del documento
+    canvas.width = document.body.clientWidth;
+    canvas.height = document.body.clientHeight;
+
+    // cleanup
+    cleanup(canvas);
+    // add particle;
+    particleList.push(randomParticle());
+
+    const a = particleList.forEach(
+      (particle) => {
+        // circleShape(canvas, changeParticleSize(moveParticle(particle))).run();
+        circleShape(
+          canvas,
+          compose(
+            changeParticleSize,
+            moveParticle,
+          )(particle)
+        ).run();
+
+      }
+      );
+     start(canvas, idx, particleList);
+    });
 }
 
 
+const canvasEl = document.getElementById('canvas');
+start(canvasEl,  1, particles);
 
-const canvas = document.getElementById('canvas')
-const context = canvas.getContext("2d");
-start(canvas,context,  1, particles)
