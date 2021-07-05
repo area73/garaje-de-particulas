@@ -2,7 +2,7 @@ const cleanup = (canvas) => {
   canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
 };
 
-const circleShape = (canvas, particle) => {
+const circleShape = canvas => particle => {
   //console.log(Math.random());
   const context = canvas.getContext("2d");
   return {
@@ -54,7 +54,7 @@ const randomParticle = () => {
     position: { x: randomNum(500) , y: randomNum(500) },
     velocity: { x: randomNum(10) - 5, y: randomNum(10) - 5 },
     acceleration: { x: randomNum(2) - 1, y: randomNum(2) - 1 },
-    color: `rgba(${randomNum(255)},${randomNum(255)},${randomNum(255)})`,
+    color: `rgba(${randomNum(255)},${randomNum(255)},${randomNum(255)},${Math.random()})`,
     size: randomNum(10),
   }
 }
@@ -76,12 +76,17 @@ const changeParticleSize = (particle) => {
 
 const compose = (...functions) => arg =>
   functions.reduceRight((result, fn) => fn(result), arg);
+// map:: a -> xs -> xs
+const map = fn => xs => xs.map(fn);
+
+
 
 
 function start(canvas,idx,particleList) {
   // OJO::: NO METER ESTo AQUI !!!!
   // canvas.width = document.body.clientWidth;
   // canvas.height = document.body.clientHeight;
+  const createShapeInCanvas = circleShape(canvas);
 
   requestAnimationFrame(function draw() {
     // console.log(canvas.width , canvas.height);
@@ -94,19 +99,16 @@ function start(canvas,idx,particleList) {
     // add particle;
     particleList.push(randomParticle());
 
-    const a = particleList.forEach(
+    particleList.forEach(
       (particle) => {
-        // circleShape(canvas, changeParticleSize(moveParticle(particle))).run();
-        circleShape(
-          canvas,
-          compose(
-            changeParticleSize,
-            moveParticle,
-          )(particle)
-        ).run();
-
+        compose(
+          createShapeInCanvas,
+          changeParticleSize,
+          moveParticle
+        )(particle).run();
       }
       );
+
      start(canvas, idx, particleList);
     });
 }
