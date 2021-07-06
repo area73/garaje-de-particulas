@@ -53,6 +53,15 @@ const changeParticleSize = particle => {
   return particle;
 }
 
+const compose = (...fn) => x => fn.reduceRight((acc,cur) => cur(acc), x);
+
+
+
+
+const processParticles = compose(
+  changeParticleSize,
+  moveParticle
+)
 
 const loop = (idx,canvas,particleList) => {
   requestAnimationFrame(
@@ -62,7 +71,10 @@ const loop = (idx,canvas,particleList) => {
       particleList.push(randomParticle())
       particleList.forEach(
         (particle) => {
-          circleShape(canvas, changeParticleSize(moveParticle(particle))).run()
+          circleShape(
+            canvas,
+            processParticles(particle)
+          ).run()
         }
       )
       idx && loop(--idx,canvas,particleList);
