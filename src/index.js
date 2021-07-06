@@ -37,11 +37,7 @@ const randomParticle = () => {
   }
 }
 
-const particleList = [
-  randomParticle(),
-  randomParticle(),
-  randomParticle()
-];
+const particleList = [];
 
 // moveParticle :: particle -> particle
 const moveParticle = (particle) => {
@@ -52,11 +48,13 @@ const moveParticle = (particle) => {
 
 
 
+
 const loop = (idx,canvas,particleList) => {
   requestAnimationFrame(
     () => {
       canvas.width = document.body.clientWidth;
       canvas.height = document.body.clientHeight;
+      particleList.push(randomParticle())
       particleList.forEach(
         (particle) => {
           circleShape(canvas, moveParticle(particle)).run()
