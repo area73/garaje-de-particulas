@@ -46,7 +46,12 @@ const moveParticle = (particle) => {
   return particle
 }
 
+//
 
+const changeParticleSize = particle => {
+  particle.size = particle.size === 50 ? 50 : particle.size + 1;
+  return particle;
+}
 
 
 const loop = (idx,canvas,particleList) => {
@@ -57,7 +62,7 @@ const loop = (idx,canvas,particleList) => {
       particleList.push(randomParticle())
       particleList.forEach(
         (particle) => {
-          circleShape(canvas, moveParticle(particle)).run()
+          circleShape(canvas, changeParticleSize(moveParticle(particle))).run()
         }
       )
       idx && loop(--idx,canvas,particleList);
