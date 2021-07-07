@@ -58,8 +58,12 @@ const compose = (...fns) => x => fns.reduceRight((acc, cur) => cur(acc), x);
 
 
 const addRebound = canvas => particle => {
-  if (particle.position.y >= canvas.height) {
-    particle.velocity.y = (particle.velocity.y - 10) * -1
+  if (particle.position.y >= canvas.height || particle.position.y <= 0) {
+    particle.velocity.y = particle.velocity.y  * -0.9
+  }
+
+  if (particle.position.x >= canvas.width || particle.position.x <= 0) {
+    particle.velocity.x = particle.velocity.x  * -0.9
   }
   return particle;
 }

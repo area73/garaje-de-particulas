@@ -1,96 +1,62 @@
 # Trabajar con partículas
 
-
 ## EL CANVAS (01-raf.js)
 
-* El canvas es como hojas de papel cebolla que se van superponiendo una encima de otra, son como fotogramas
+* Hablar sobre el elemento del canvas y cómo funciona
 
+* El API de dibujo de HTML
+  [canvas API](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/canvas)
 
-1/ primero tendremos que tener un elemento HTML canvas
-**Mirar el html index.html y crearlo desde 0** 
-```html
-<canvas id="canvas"></canvas>
-```
+### El API d dibujo
 
-**TUTOR:** crear  HTML con javascript index.html
-**@REFERENCIAS** https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/stroke
-
-### Podemos pintar lineas o arcos
-
-el API de dibujo tendremos:
-Para lineas: 
-
-Ejemplo con lineas :
+**COPIAR Y PEGAR**
 ```js
-const canvas = document.getElementById("canvas");  // obtenemos el elemento del canvas
-const ctx = canvas.getContext("2d"); // obtenemos el contexto 2d del canvas
-ctx.strokeStyle = '#00ff00'; // como estamso pintando sobre fondo negro tenemos que poner el stoke en otro color
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext('2d');
+
+// canvas.width = document.body.clientWidth;
+// canvas.height = document.body.clientHeight;
+
+// linea
+ctx.strokeStyle = "#FF0000";
 ctx.beginPath();
-ctx.moveTo(50, 140);
-ctx.lineTo(150, 60);
-ctx.lineTo(250, 140);
+ctx.moveTo(50,140);
+ctx.lineTo(150,60);
+ctx.lineTo(250,140);
 ctx.closePath();
 ctx.stroke();
-// EXTRA: podríamos definido otras propiedades como el grosor de la linea o el relleno
 
-// ctx.lineWidth = 5;
-// ctx.strokeStyle = '#00ffff';
-
-```
-
-**BOLA EXTRA   VISUALIZACIÓN**
-
-El canvas tiene 2 tamaños (como los monitores las pulgadas y la resolución de pixels)
-1/ El buffer de dibujo 
-   => dimensión en pixeles del canvas (asociado a los estilos css)
-```css
-        canvas {  
-          width: 500px;
-          height: 400px;
-        }
-```
-```js
-        canvas.style.width = "500px";
-        canvas.style.height = "400px";
-```
-
-2/ tamaño de la visualización ( atributos)  ~ resolución pixeles
-```html
-<canvas width="400" height="300"></canvas>
-```
-```js
-        someCanvasElement.width = 400;
-        someCanvasElement.height = 300;
-```
----
-
-Para que sea dinámico podríamos hacer esto en el JS:
-```js
-   canvas.width = document.body.clientWidth;
-   canvas.height = document.body.clientHeight;
-```
-**NOTA** lo copiamos al js y ya lo actulizaremos en el futuro
-
-
-2/ Vamos a crearnos un circulo
-
-```js
-ctx.fillStyle = "#f9e8a1"
+/*
+// linena
+ctx.strokeStyle = "#80ff00";
 ctx.beginPath();
-// arc( x, y, radio, inicioArcoRad, finArcoRad, clockwiseBool) 
-ctx.arc(100,200,50,0,2 * Math.PI,false);
+ctx.moveTo(150,40);
+ctx.lineTo(10,60);
+ctx.lineTo(25,140);
+ctx.closePath();
+ctx.stroke();
+*/
+/*
+// Circulo
+ctx.fillStyle = "rgba(160,182,217,0.66)"
+ctx.beginPath();
+ctx.arc(100,200,50,Math.PI, Math.PI / 3,true);
+ctx.closePath();
+ctx.stroke();
 ctx.fill();
+*/
 ```
+**BOLA EXTRA VISUALIZACIÓN**
+/*
+El canvas tiene 2 tamaños (como los monitores las pulgadas y la resolución de pixels)
+1/ **El buffer de dibujo** CSS --> canvas.style.width = "500px";
+2/ **tamaño de la visualización** canvasEl.width = 400;
 
-----
+### EL movimiento (requestAnimationFrame(fn))
 
-## EL movimiento (requestAnimationFrame(fn))
+setIntrerval Vs requestAnimationFrame
 
-**Explicar como funciona la animación**
-
-**Compararlo con setIntrerval (setIntrerval(callback, time))**
-
-ejemplo:
+**COPIAR Y PEGAR**
 ```js
 const canvas = document.getElementById("canvas");  // obtenemos el elemento del canvas
 const ctx = canvas.getContext("2d"); // obtenemos el contexto 2d del canvas
@@ -98,49 +64,31 @@ canvas.width = document.body.clientWidth;
 canvas.height = document.body.clientHeight;
 
 const circulo = () => {
-  ctx.fillStyle = "rgba(123,12,67,0.5)";
+  ctx.fillStyle = "rgb(44,234,209)";
   ctx.beginPath();
   ctx.arc(100,200,50,0,2 * Math.PI,false);
   ctx.fill();
 }
 
-requestAnimationFrame(circulo)
+const loop = () => {
+  console.log("👍");
+  circulo();
+}
+
+requestAnimationFrame(loop)
 
 ```
 
 #### Concepto de recursividad
 
-¿cómo podríamos hacer que nuestro requestAnimationFrame se ejecutara cada vez con parámetros distintos?
-==> RECCURSIVIDAD
-https://gist.github.com/louisremi/1114293
+* Añadimos recursividad
+* ¿Cómo podríamos pasar parámetros
 
-Vamos a ver un caso de recursividad:
-Es decir una función que se llama a si misma pero con distintos parámetros
+El problema con el requestAnimationFrame es que no podemos pasarle un parámetro a la función de callback y nosotros queremos que cada vez que se ejecute la función que contiene requestanimationframe lo haga con parámetros distintostendremos:
 
+**COPIAR Y PEGAR SIN BORRAR LO ANTERIOR PARA VER LA DIFERENCIA**
 ```js
-function fn1(i) {
-  console.log(i)
-  i++;
-  fn1(i);
-}
-```
-
-El problema con el requestAnimationFrame es que no podemos pasarle un parámetro a la función de callback
-y nosotros queremos que cada vez que se ejecute la función que contiene requestanimationframe lo haga 
-con parámetros distintostendremos:
-```js
-requestAnimationFrame(loop)
-// no podemos tener loop con parámetros ????
-function loop (n) {
-  // n++;
-  console.log(n)
-  requestAnimationFrame(loop)  // <==== cómo pasamos parámetros 
-}
-```
-
-**FINAL**
-```js
-
+// --------------------------
 const loop = (idx) => {
    // closure
    requestAnimationFrame(
@@ -154,43 +102,22 @@ const loop = (idx) => {
 loop(100);
 ```
 
-**Un ejemplo moviendo el círculo** 
+### Un ejemplo moviendo el círculo
+
+**SUSTITUIR en la función circulo**
 ```js
-const canvas = document.getElementById("canvas");  // obtenemos el elemento del canvas
-const ctx = canvas.getContext("2d"); // obtenemos el contexto 2d del canvas
-
-  canvas.width = document.body.clientWidth;
-  canvas.height = document.body.clientHeight;
-// [1] pasamos el parametro al circulo
-const pintaCirculo = (dx) => {
-  ctx.fillStyle = "rgba(123,12,67,0.5)";
-  ctx.beginPath();
-  ctx.arc(100 + dx,200 + dx ,50,0,2 * Math.PI,false);
-  ctx.fill();
-}
-
-const loop = (idx) => {
-  requestAnimationFrame(
-    () => {
-      pintaCirculo(idx);
-      // añadimos 10px
-      loop(idx + 10);
-    }
-  )
-}
-
-loop(100);
+const circulo = (inc) => {
+...
+ctx.arc(100 + inc,200,50,0,2 * Math.PI,false);
+...
+circulo(idx);
 ```
 
 ### borramos
-
+**COPIAR Y PEGAR anadiendo**
+```js
 ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-y lo metemos antes de pintaCirculo
-
-meter un log para explicar lugo el request   console.log(i)
-
-
+```
 
 ## EMPEZAMOS A CONSTRUIR !!!
 
@@ -216,7 +143,6 @@ loop(1000,canvas, particleList);
 
 ### creamos una estructura de una partíclula (02-particle.js)
 ```js
-
 const Particle = {
     position: { x: 0, y: 0 },
     velocity: { x: 1, y: 1 },
@@ -265,7 +191,6 @@ const randomParticle = () => {
   return {
      position: { x: randomNum(500) , y: randomNum(500) },
      velocity: { x: randomNum(10) - 5, y: randomNum(10) - 5 },
-     acceleration: { x: randomNum(2) - 1, y: randomNum(2) - 1 }, 
      color: `rgba(${randomNum(255)},${randomNum(255)},${randomNum(255)}, ${Math.random()})`,
      size: randomNum(10),
   }
@@ -295,7 +220,7 @@ particleList.forEach(
 
 ### Función para mover las partículas (05-moveParticle.js)
 
-Creamos una **función que para mover**
+Creamos una **función para mover**
 
 ```js
 // moveParticle :: particle -> particle
@@ -339,22 +264,10 @@ particleList.forEach(
 ```
 
 Empezamos a tener problemillas para hacer nuestro código al estar muy acoplado y difícil de seguir:
-por ejemplo
-```js
-circleShape(canvas, 
-        changeSpeed(
-          changeColor(
-            changeParticleSize(
-              moveParticle(
-                particle
-              )
-            )
-          )
-        )
-).run()
-```
+
 
 ### Composición (09-compose.js)
+**EXPLICAR CONCEPTOS DE composición, aplicación parcial**
 
 Introducimos la composición FoG(x) y el concepto de **point free** programming (programación de punto libre) 
 ** (g º f)(x) = g(f(x))**
@@ -455,8 +368,12 @@ NOTA: primero cambiamos la vel y luego poner la elasticidad no sea del 100%
 
 ```js
 const addRebound = canvas => particle => {
-  if (particle.position.y >= canvas.height) {
-    particle.velocity.y = (particle.velocity.y - 10) * -1
+  if (particle.position.y >= canvas.height || particle.position.y <= 0) {
+    particle.velocity.y = particle.velocity.y  * -0.9
+  }
+
+  if (particle.position.x >= canvas.width || particle.position.x <= 0) {
+    particle.velocity.x = particle.velocity.x  * -0.9
   }
   return particle;
 }

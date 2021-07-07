@@ -20,6 +20,10 @@ A continuación se listan algunos recursos que me parecen interesantes asociados
 [imágenes de apoyo para la charla](https://www.notion.so/siete3/Garaje-de-part-culas-0942cb752dfb4a52a09160bd29918c6f)
 
 ### Canvas y el loop de eventos
+
+[canvas API](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/canvas)
+
+
 [requestAnimationFrame](https://developer.mozilla.org/en-US/docs/Web/API/Window/requestAnimationFrame)
 
 [setInterval](https://www.w3schools.com/jsref/met_win_setinterval.asp)
