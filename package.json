@@ -1,0 +1,25 @@
+{
+  "name": "garaje-de-particulas",
+  "version": "1.0.0",
+  "description": "Charla funcional para Garaje de Ideas",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "npx http-server ./"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/area73/garaje-de-particulas.git"
+  },
+  "keywords": [
+    "particle",
+    "system",
+    "functional"
+  ],
+  "author": "Rodrigo Erades <rerades@siete3.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/area73/garaje-de-particulas/issues"
+  },
+  "homepage": "https://github.com/area73/garaje-de-particulas#readme"
+}
