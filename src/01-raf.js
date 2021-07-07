@@ -13,5 +13,5 @@ const loop = (idx,canvas,particleList) => {
   )
 }
 
-loop(10,canvas, particleList);
+loop(1000,canvas, particleList);
 

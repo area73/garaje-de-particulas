@@ -8,7 +8,7 @@ const Particle = {
   size: 5,
 };
 
-const circleShape = canvas => particle => {
+const circleShape = (canvas,particle) => {
   const context = canvas.getContext("2d");
   return {
     run: () => {
@@ -42,42 +42,6 @@ const particleList = [
   randomParticle()
 ];
 
-// moveParticle :: particle -> particle
-const moveParticle = (particle) => {
-  particle.position.x = particle.position.x + particle.velocity.x;
-  particle.position.y = particle.position.y + particle.velocity.y;
-  return particle
-}
-
-const changeParticleSize = particle => {
-  particle.size = particle.size === 50 ? 50 : particle.size + 0.5;
-  return particle;
-}
-
-const compose = (...fns) => x => fns.reduceRight((acc, cur) => cur(acc), x);
-
-
-const addRebound = canvas => particle => {
-  if (particle.position.y >= canvas.height) {
-    particle.velocity.y = (particle.velocity.y - 10) * -1
-  }
-  return particle;
-}
-
-const addGravity = particle => {
-  particle.velocity.y = particle.velocity.y+1
-  return particle;
-}
-
-
-const processParticles = canvas => compose(
-  circleShape(canvas),
-  addGravity,
-  addRebound(canvas),
-  changeParticleSize,
-  moveParticle
-)
-
 const loop = (idx,canvas,particleList) => {
   requestAnimationFrame(
     () => {
@@ -85,11 +49,10 @@ const loop = (idx,canvas,particleList) => {
       canvas.height = document.body.clientHeight;
       // CLEANUP
       cleanup(canvas);
-      particleList.push(randomParticle())
       // ForEach
       particleList.forEach(
         (particle) => {
-          processParticles(canvas)(particle).run();
+          circleShape(canvas, particle).run()
         }
       )
       idx && loop(--idx,canvas,particleList);
@@ -97,5 +60,5 @@ const loop = (idx,canvas,particleList) => {
   )
 }
 
-loop(1000, canvas, particleList);
+loop(1000,canvas, particleList);
 

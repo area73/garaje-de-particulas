@@ -57,13 +57,6 @@ const changeParticleSize = particle => {
 const compose = (...fns) => x => fns.reduceRight((acc, cur) => cur(acc), x);
 
 
-const addRebound = canvas => particle => {
-  if (particle.position.y >= canvas.height) {
-    particle.velocity.y = (particle.velocity.y - 10) * -1
-  }
-  return particle;
-}
-
 const addGravity = particle => {
   particle.velocity.y = particle.velocity.y+1
   return particle;
@@ -73,7 +66,6 @@ const addGravity = particle => {
 const processParticles = canvas => compose(
   circleShape(canvas),
   addGravity,
-  addRebound(canvas),
   changeParticleSize,
   moveParticle
 )
