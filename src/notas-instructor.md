@@ -86,11 +86,6 @@ ctx.fill();
 
 ## EL movimiento (requestAnimationFrame(fn))
 
-[requestAnimationFrame](https://developer.mozilla.org/en-US/docs/Web/API/Window/requestAnimationFrame)
-[setInterval](https://www.w3schools.com/jsref/met_win_setinterval.asp)
-[el loop](https://www.youtube.com/watch?v=cCOL7MC4Pl0&list=PLv2HGyQB-11LakigClk4p4MiR8eY09--_&index=1&t=1011s)
-[what the heck is the event loop anyway?](https://www.youtube.com/watch?v=8aGhZQkoFbQ&t=2s)
-
 **Explicar como funciona la animación**
 
 **Compararlo con setIntrerval (setIntrerval(callback, time))**
@@ -112,7 +107,6 @@ const circulo = () => {
 requestAnimationFrame(circulo)
 
 ```
-
 
 #### Concepto de recursividad
 
@@ -364,9 +358,6 @@ circleShape(canvas,
 
 Introducimos la composición FoG(x) y el concepto de **point free** programming (programación de punto libre) 
 ** (g º f)(x) = g(f(x))**
-[composición](https://medium.com/front-end-weekly/how-to-use-powerful-function-composition-in-javascript-3c0447642044)
-[functions-composition](https://www.mathsisfun.com/sets/functions-composition.html)
-https://www.universoformulas.com/matematicas/analisis/composicion-funciones/
 
 * es asociativa:
 f ⋅ (g ⋅ h) = (f ⋅ g) ⋅ h
