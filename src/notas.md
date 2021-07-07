@@ -491,7 +491,7 @@ const shapeSquare = canvas => particle => {
 **FINAL**
 Hablar de map en vez de forEach
 Hablar de ramda
-HAblar de fantasyLand
+Hablar de fantasyLand
 
 
 
